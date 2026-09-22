@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>USD/JPY リアルタイムチャート</title>
+    <!-- Tailwind CSS for styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* カスタムスタイル: チャートコンテナの高さ調整 */
+        .tradingview-widget-container {
+            height: 100%;
+            width: 100%;
+        }
+    </style>
+</head>
+<body class="bg-gray-900 text-white font-sans antialiased flex flex-col h-screen overflow-hidden">
+
+    <!-- ヘッダー部分 -->
+    <header class="bg-gray-800 shadow-md p-4 flex justify-between items-center z-10">
+        <div class="flex items-center space-x-3">
+            <!-- アイコンの代わりにシンプルなテキスト装飾 -->
+            <div class="bg-blue-600 text-white font-bold p-2 rounded-lg">
+                FX
+            </div>
+            <h1 class="text-xl md:text-2xl font-bold tracking-wider">USD/JPY Live Chart</h1>
+        </div>
+        <!-- ライブ更新中を示すインジケーター -->
+        <div class="flex items-center space-x-2">
+            <span class="relative flex h-3 w-3">
+              <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+              <span class="relative inline-flex rounded-full h-3 w-3 bg-green-500"></span>
+            </span>
+            <span class="text-sm text-gray-300 hidden md:inline-block">Live</span>
+        </div>
+    </header>
+
+    <!-- メインコンテンツ (チャートエリア) -->
+    <main class="flex-grow relative p-2 md:p-4 pb-0">
+        
+        <!-- TradingView Widget BEGIN -->
+        <div class="tradingview-widget-container bg-gray-800 rounded-lg overflow-hidden shadow-xl border border-gray-700 h-full">
+            <div id="tradingview_chart" class="h-full w-full"></div>
+            <div class="tradingview-widget-copyright text-xs p-2 text-center text-gray-500">
+                <a href="https://jp.tradingview.com/" rel="noopener nofollow" target="_blank">
+                    <span class="blue-text hover:text-blue-400 transition-colors">TradingView</span>
+                </a>提供のチャート
+            </div>
+            
+            <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
+            <script type="text/javascript">
+            // ウィンドウの読み込みが完了してからウィジェットを初期化
+            window.addEventListener('DOMContentLoaded', (event) => {
+                new TradingView.widget(
+                {
+                    "autosize": true,         // コンテナに合わせて自動リサイズ
+                    "symbol": "FX:USDJPY",    // シンボル: ドル円
+                    "interval": "1",          // 初期足: 1分足
+                    "timezone": "Asia/Tokyo", // タイムゾーン: 東京
+                    "theme": "dark",          // テーマ: ダークモード
+                    "style": "1",             // スタイル: ローソク足 (1)
+                    "locale": "ja",           // 言語: 日本語
+                    "enable_publishing": false,
+                    "backgroundColor": "#1f2937", // 背景色 (Tailwindのgray-800に合わせる)
+                    "gridColor": "#374151",       // グリッド線 (Tailwindのgray-700)
+                    "hide_top_toolbar": false,    // 上部ツールバーを表示 (時間足変更など)
+                    "hide_legend": false,         // 凡例を表示
+                    "save_image": false,          // 画像保存ボタンを非表示
+                    "container_id": "tradingview_chart",
+                    // ツールバーの設定（シンプルな表示にしたい場合は一部非表示にできます）
+                    "toolbar_bg": "#1f2937",
+                    "withdateranges": true,       // 下部の日付範囲セレクターを表示
+                    "studies": [                  // 初期表示するインジケーター（オプション）
+                        "Volume@tv-basicstudies"  // 出来高
+                    ]
+                }
+                );
+            });
+            </script>
+        </div>
+        <!-- TradingView Widget END -->
+
+    </main>
+
+    <!-- フッター -->
+    <footer class="bg-gray-800 p-2 text-center text-xs text-gray-500 mt-2 z-10">
+        <p>※表示されている価格やチャートはTradingViewが提供するものであり、実際の取引価格と異なる場合があります。</p>
+    </footer>
+
+</body>
+</html>
